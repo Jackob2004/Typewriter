@@ -1,0 +1,5 @@
+name: Typewriter
+version: '1.0-SNAPSHOT'
+main: com.jackob.typewriter.Typewriter
+api-version: '1.21'
+description: typing animation plugin

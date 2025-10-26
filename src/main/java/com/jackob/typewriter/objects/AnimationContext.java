@@ -8,22 +8,30 @@ public class AnimationContext {
 
     private int currCharacter;
 
-    private String currText;
+    private final char[] currText;
 
-    public AnimationContext(TextDisplay display, int currCharacter, String currText) {
+    public AnimationContext(TextDisplay display, int textLength) {
         this.display = display;
-        this.currCharacter = currCharacter;
-        this.currText = currText;
+        this.currCharacter = 0;
+        this.currText = new char[textLength];
     }
 
     public int getCurrCharacter() { return currCharacter; }
 
     public TextDisplay getDisplay() { return display; }
 
-    public String getCurrText() { return currText; }
+    public char[] getCurrText() { return currText; }
 
-    public void setCurrCharacter(int currCharacter) { this.currCharacter = currCharacter; }
+    public void incrementCurrCharacter() {
+        if (currCharacter + 1 < currText.length) {
+            currCharacter++;
+        }
+    }
 
-    public void setCurrText(String currText) { this.currText = currText; }
+    public void decrementCurrCharacter() {
+        if (currCharacter - 1 >= 0)  {
+            this.currCharacter--;
+        }
+    }
 
 }

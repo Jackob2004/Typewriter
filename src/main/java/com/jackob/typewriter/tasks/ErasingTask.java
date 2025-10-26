@@ -36,7 +36,7 @@ public class ErasingTask implements WriterTask {
                 context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter()));
             }
 
-        }.runTaskTimer(plugin, 20, 10);
+        }.runTaskTimer(plugin, 20, 8);
     }
 
 }

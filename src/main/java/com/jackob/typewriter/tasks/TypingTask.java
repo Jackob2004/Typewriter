@@ -3,6 +3,7 @@ package com.jackob.typewriter.tasks;
 import com.jackob.typewriter.Typewriter;
 import com.jackob.typewriter.objects.AnimationContext;
 import com.jackob.typewriter.utils.WriterUtil;
+import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -35,9 +36,10 @@ public class TypingTask implements WriterTask {
 
                 context.incrementCurrCharacter();
                 localCurrCharacter++;
+                context.getReceiver().playSound(context.getReceiver(), Sound.BLOCK_COMPARATOR_CLICK, 1, 1);
             }
 
-        }.runTaskTimer(plugin, 20, 10);
+        }.runTaskTimer(plugin, 20, 8);
     }
 
 }

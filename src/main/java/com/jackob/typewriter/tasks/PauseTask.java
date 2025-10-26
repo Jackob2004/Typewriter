@@ -15,6 +15,10 @@ public class PauseTask implements WriterTask {
     private boolean showCursor;
 
     public PauseTask(int repetitions) {
+        if (repetitions < 1) {
+            throw new IllegalArgumentException("repetitions must be a positive integer");
+        }
+
         this.repetitions = repetitions;
         this.showCursor = true;
     }

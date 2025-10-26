@@ -17,20 +17,23 @@ public class Writer {
 
     private final int maxWordLength;
 
+    private final int lines;
+
     private AnimationContext context;
 
     Writer(Typewriter plugin, Builder builder) {
         this.plugin = plugin;
         this.tasks = builder.tasks;
         this.maxWordLength = builder.maxWordLength;
+        this.lines = Math.toIntExact(builder.wholeText.toString().lines().count());
     }
 
     public void start(Player player) {
-        final String invisiblePart = "W".repeat(this.maxWordLength + 4);
-        final TextDisplay background = WriterUtil.spawnDisplay(player, true, invisiblePart);
+        final String invisibleText = "W".repeat(this.maxWordLength + 4) + "\n".repeat(lines - 1);
+        final TextDisplay background = WriterUtil.spawnDisplay(player, true, invisibleText);
         final TextDisplay display = WriterUtil.spawnDisplay(player, false, "");
 
-        context = new AnimationContext(display, maxWordLength);
+        context = new AnimationContext(display, player, lines * maxWordLength);
 
         plugin.getManager().registerDisplay(background);
         plugin.getManager().registerDisplay(display);
@@ -51,8 +54,12 @@ public class Writer {
 
         private int maxWordLength = 0;
 
+        private final StringBuilder wholeText = new StringBuilder();
+
         public Builder type(String text) {
+            wholeText.append(text);
             maxWordLength = Math.max(maxWordLength, text.length());
+
             tasks.offer(new TypingTask(text));
             return this;
         }

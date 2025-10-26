@@ -6,11 +6,11 @@ import com.jackob.typewriter.utils.WriterUtil;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-public class ErasingTask implements WriterTask {
+public class EraseTask implements WriterTask {
 
     private int charsToErase;
 
-    public ErasingTask(int charsToErase) {
+    public EraseTask(int charsToErase) {
         if (charsToErase < 1) {
             throw new IllegalArgumentException("charsToErase must be a positive integer");
         }

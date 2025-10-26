@@ -60,12 +60,12 @@ public class Writer {
             wholeText.append(text);
             maxWordLength = Math.max(maxWordLength, text.length());
 
-            tasks.offer(new TypingTask(text));
+            tasks.offer(new TypeTask(text));
             return this;
         }
 
         public Builder erase(int charsToErase) {
-            tasks.offer(new ErasingTask(charsToErase));
+            tasks.offer(new EraseTask(charsToErase));
             return this;
         }
 

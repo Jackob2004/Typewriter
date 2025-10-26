@@ -7,13 +7,13 @@ import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-public class TypingTask implements WriterTask {
+public class TypeTask implements WriterTask {
 
     private final char[] text;
 
     private int localCurrCharacter;
 
-    public TypingTask(String text) {
+    public TypeTask(String text) {
         this.text = text.toCharArray();
         this.localCurrCharacter = 0;
     }

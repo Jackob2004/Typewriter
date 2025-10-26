@@ -20,7 +20,13 @@ public class TestCommand implements BasicCommand {
         if (!(source.getSender() instanceof Player p)) return;
 
         final Writer writer = new Writer.Builder()
-                .type("Test\n")
+                .type("Hello\n")
+                .pause(5)
+                .type("World!")
+                .erase(6)
+                .type("There")
+                .delete()
+                .type("nothing to lose")
                 .build(plugin);
 
         writer.start(p);

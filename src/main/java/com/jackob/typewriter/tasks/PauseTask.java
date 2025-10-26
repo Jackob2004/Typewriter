@@ -10,20 +10,17 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class PauseTask implements WriterTask {
 
-    private final Typewriter plugin;
-
     private int repetitions;
 
     private boolean showCursor;
 
-    public PauseTask(Typewriter plugin, int repetitions) {
-        this.plugin = plugin;
+    public PauseTask(int repetitions) {
         this.repetitions = repetitions;
         this.showCursor = true;
     }
 
     @Override
-    public BukkitTask execute(Runnable onComplete, AnimationContext context) {
+    public BukkitTask execute(Typewriter plugin, Runnable onComplete, AnimationContext context) {
         return new BukkitRunnable() {
 
             @Override

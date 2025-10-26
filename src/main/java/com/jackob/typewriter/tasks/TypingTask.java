@@ -8,20 +8,17 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class TypingTask implements WriterTask {
 
-    private final Typewriter plugin;
-
     private final char[] text;
 
     private int localCurrCharacter;
 
-    public TypingTask(Typewriter plugin, String text) {
-        this.plugin = plugin;
+    public TypingTask(String text) {
         this.text = text.toCharArray();
         this.localCurrCharacter = 0;
     }
 
     @Override
-    public BukkitTask execute(Runnable onComplete, AnimationContext context) {
+    public BukkitTask execute(Typewriter plugin, Runnable onComplete, AnimationContext context) {
         return new BukkitRunnable() {
 
             @Override
@@ -40,7 +37,7 @@ public class TypingTask implements WriterTask {
                 localCurrCharacter++;
             }
 
-        }.runTaskTimer(plugin, 0, 12);
+        }.runTaskTimer(plugin, 20, 10);
     }
 
 }

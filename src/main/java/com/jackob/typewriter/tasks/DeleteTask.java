@@ -8,14 +8,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class DeleteTask implements WriterTask {
 
-    private final Typewriter plugin;
-
-    public DeleteTask(Typewriter plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
-    public BukkitTask execute(Runnable onComplete, AnimationContext context) {
+    public BukkitTask execute(Typewriter plugin, Runnable onComplete, AnimationContext context) {
         return new BukkitRunnable() {
 
             @Override

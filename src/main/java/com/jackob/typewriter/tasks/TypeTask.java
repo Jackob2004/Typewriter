@@ -32,7 +32,7 @@ public class TypeTask implements WriterTask {
 
                 context.getCurrText()[context.getCurrCharacter()] = text[localCurrCharacter];
 
-                context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter() + 1));
+                context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter() + 1, context.getTextColor()));
 
                 context.incrementCurrCharacter();
                 localCurrCharacter++;

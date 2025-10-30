@@ -21,7 +21,7 @@ public class DeleteTask implements WriterTask {
                 }
 
                 context.decrementCurrCharacter();
-                context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter()));
+                context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter(), context.getTextColor()));
             }
 
         }.runTaskTimer(plugin, 20, 2);

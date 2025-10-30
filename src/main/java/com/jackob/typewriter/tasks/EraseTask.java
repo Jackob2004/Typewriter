@@ -33,7 +33,7 @@ public class EraseTask implements WriterTask {
                 context.decrementCurrCharacter();
                 charsToErase--;
 
-                context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter()));
+                context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter(), context.getTextColor()));
             }
 
         }.runTaskTimer(plugin, 20, 8);

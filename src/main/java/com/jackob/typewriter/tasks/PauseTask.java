@@ -31,7 +31,7 @@ public class PauseTask implements WriterTask {
             public void run() {
                 if (repetitions <= 0) {
                     if (!showCursor) {
-                        context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter()));
+                        context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter(), context.getTextColor()));
                     }
 
                     this.cancel();
@@ -39,7 +39,7 @@ public class PauseTask implements WriterTask {
                     return;
                 }
 
-                Component text = WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter());
+                Component text = WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter(), context.getTextColor());
 
                 if (showCursor) {
                     text = text.append(Component.text(" |").color(NamedTextColor.WHITE));

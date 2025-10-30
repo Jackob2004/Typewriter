@@ -3,6 +3,8 @@ package com.jackob.typewriter.objects;
 import com.jackob.typewriter.Typewriter;
 import com.jackob.typewriter.tasks.*;
 import com.jackob.typewriter.utils.WriterUtil;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
@@ -19,6 +21,8 @@ public class Writer {
 
     private final int lines;
 
+    private final TextColor textColor;
+
     private AnimationContext context;
 
     Writer(Typewriter plugin, Builder builder) {
@@ -26,6 +30,7 @@ public class Writer {
         this.tasks = builder.tasks;
         this.maxWordLength = builder.maxWordLength;
         this.lines = Math.toIntExact(builder.wholeText.toString().lines().count());
+        this.textColor = builder.textColor;
     }
 
     public void start(Player player) {
@@ -33,7 +38,7 @@ public class Writer {
         final TextDisplay background = WriterUtil.spawnDisplay(player, true, invisibleText);
         final TextDisplay display = WriterUtil.spawnDisplay(player, false, "");
 
-        context = new AnimationContext(display, player, lines * maxWordLength);
+        context = new AnimationContext(display, player, lines * maxWordLength, textColor);
 
         plugin.getManager().registerDisplay(background);
         plugin.getManager().registerDisplay(display);
@@ -56,6 +61,8 @@ public class Writer {
 
         private final StringBuilder wholeText = new StringBuilder();
 
+        private TextColor textColor = NamedTextColor.GREEN;
+
         public Builder type(String text) {
             wholeText.append(text);
             maxWordLength = Math.max(maxWordLength, text.length());
@@ -76,6 +83,11 @@ public class Writer {
 
         public Builder pause(int repetitions) {
             tasks.offer(new PauseTask(repetitions));
+            return this;
+        }
+
+        public Builder setTextColor(TextColor color) {
+            textColor = color;
             return this;
         }
 

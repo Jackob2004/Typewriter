@@ -1,6 +1,7 @@
 package com.jackob.typewriter.utils;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Display;
@@ -8,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
 import static net.kyori.adventure.text.format.NamedTextColor.BLACK;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class WriterUtil {
 
@@ -16,16 +16,17 @@ public class WriterUtil {
      *
      * @param chars represents whole text char array
      * @param textEnd points to the end of the text - exclusive
+     * @param color text color
      * @return text component to be displayed excluding erased chars
      */
-    public static Component generateTextComponent(char[] chars, int textEnd) {
+    public static Component generateTextComponent(char[] chars, int textEnd, TextColor color) {
         final StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < textEnd; i++) {
             sb.append(chars[i]);
         }
 
-        return Component.text(sb.toString()).color(GREEN);
+        return Component.text(sb.toString()).color(color);
     }
 
     /**

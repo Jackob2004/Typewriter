@@ -3,14 +3,15 @@ package com.jackob.typewriter.manager;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HologramManager {
 
-    private final HashSet<Display> displays;
+    private final List<Display> displays;
 
     public HologramManager() {
-        this.displays = new HashSet<>();
+        this.displays = new ArrayList<>();
     }
 
     public void registerDisplay(Display display) {

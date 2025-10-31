@@ -8,14 +8,15 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class Writer {
 
     private final Typewriter plugin;
 
-    private final Queue<WriterTask> tasks;
+    private final List<WriterTask> tasksSequence;
+
+    private final Queue<WriterTask> tasksQueue;
 
     private final int maxWordLength;
 
@@ -23,14 +24,18 @@ public class Writer {
 
     private final TextColor textColor;
 
+    private final boolean loop;
+
     private AnimationContext context;
 
     Writer(Typewriter plugin, Builder builder) {
         this.plugin = plugin;
-        this.tasks = builder.tasks;
+        this.tasksSequence = new ArrayList<>(builder.tasksSequence);
+        this.tasksQueue = new LinkedList<>(tasksSequence);
         this.maxWordLength = builder.maxWordLength;
         this.lines = Math.toIntExact(builder.wholeText.toString().lines().count());
         this.textColor = builder.textColor;
+        this.loop = builder.loop;
     }
 
     public void start(Player player) {
@@ -47,15 +52,21 @@ public class Writer {
     }
 
     private void executeNext() {
-        if (tasks.isEmpty()) {
-            return;
+        if (tasksQueue.isEmpty()) {
+
+            if (loop) {
+                tasksSequence.forEach(WriterTask::reset);
+                tasksQueue.addAll(tasksSequence);
+            } else {
+                return;
+            }
         }
 
-        tasks.poll().execute(plugin, this::executeNext, context);
+        Objects.requireNonNull(tasksQueue.poll()).execute(plugin, this::executeNext, context);
     }
 
     public static class Builder {
-        private final Queue<WriterTask> tasks = new LinkedList<>();
+        private final List<WriterTask> tasksSequence = new ArrayList<>();
 
         private int maxWordLength = 0;
 
@@ -63,31 +74,38 @@ public class Writer {
 
         private TextColor textColor = NamedTextColor.GREEN;
 
+        private boolean loop = false;
+
         public Builder type(String text) {
             wholeText.append(text);
             maxWordLength = Math.max(maxWordLength, text.length());
 
-            tasks.offer(new TypeTask(text));
+            tasksSequence.add(new TypeTask(text));
             return this;
         }
 
         public Builder erase(int charsToErase) {
-            tasks.offer(new EraseTask(charsToErase));
+            tasksSequence.add(new EraseTask(charsToErase));
             return this;
         }
 
         public Builder delete() {
-            tasks.offer(new DeleteTask());
+            tasksSequence.add(new DeleteTask());
             return this;
         }
 
         public Builder pause(int repetitions) {
-            tasks.offer(new PauseTask(repetitions));
+            tasksSequence.add(new PauseTask(repetitions));
             return this;
         }
 
         public Builder setTextColor(TextColor color) {
             textColor = color;
+            return this;
+        }
+
+        public Builder setLoop(boolean loop) {
+            this.loop = loop;
             return this;
         }
 

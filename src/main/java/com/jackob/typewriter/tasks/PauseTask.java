@@ -10,7 +10,9 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class PauseTask implements WriterTask {
 
-    private int repetitions;
+    private final int repetitions;
+
+    private int currRepetitions;
 
     private boolean showCursor;
 
@@ -20,6 +22,7 @@ public class PauseTask implements WriterTask {
         }
 
         this.repetitions = repetitions;
+        this.currRepetitions = repetitions;
         this.showCursor = true;
     }
 
@@ -29,7 +32,7 @@ public class PauseTask implements WriterTask {
 
             @Override
             public void run() {
-                if (repetitions <= 0) {
+                if (currRepetitions <= 0) {
                     if (!showCursor) {
                         context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter(), context.getTextColor()));
                     }
@@ -47,11 +50,17 @@ public class PauseTask implements WriterTask {
 
                 context.getDisplay().text(text);
 
-                repetitions--;
+                currRepetitions--;
                 showCursor = !showCursor;
             }
 
         }.runTaskTimer(plugin, 20, 12);
+    }
+
+    @Override
+    public void reset() {
+        currRepetitions = repetitions;
+        showCursor = true;
     }
 
 }

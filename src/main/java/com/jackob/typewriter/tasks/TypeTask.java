@@ -42,4 +42,9 @@ public class TypeTask implements WriterTask {
         }.runTaskTimer(plugin, 20, 8);
     }
 
+    @Override
+    public void reset() {
+        localCurrCharacter = 0;
+    }
+
 }

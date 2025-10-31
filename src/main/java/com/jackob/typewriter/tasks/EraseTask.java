@@ -8,7 +8,9 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class EraseTask implements WriterTask {
 
-    private int charsToErase;
+    private final int charsToErase;
+
+    private int currCharsToErase;
 
     public EraseTask(int charsToErase) {
         if (charsToErase < 1) {
@@ -16,6 +18,7 @@ public class EraseTask implements WriterTask {
         }
 
         this.charsToErase = charsToErase;
+        this.currCharsToErase = charsToErase;
     }
 
     @Override
@@ -24,19 +27,24 @@ public class EraseTask implements WriterTask {
 
             @Override
             public void run() {
-                if (charsToErase <= 0) {
+                if (currCharsToErase <= 0) {
                     this.cancel();
                     onComplete.run();
                     return;
                 }
 
                 context.decrementCurrCharacter();
-                charsToErase--;
+                currCharsToErase--;
 
                 context.getDisplay().text(WriterUtil.generateTextComponent(context.getCurrText(), context.getCurrCharacter(), context.getTextColor()));
             }
 
         }.runTaskTimer(plugin, 20, 8);
+    }
+
+    @Override
+    public void reset() {
+        currCharsToErase = charsToErase;
     }
 
 }

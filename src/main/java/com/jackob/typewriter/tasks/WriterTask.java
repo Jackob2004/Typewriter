@@ -6,4 +6,9 @@ import org.bukkit.scheduler.BukkitTask;
 
 public interface WriterTask {
     BukkitTask execute(Typewriter plugin, Runnable onComplete, AnimationContext context);
+
+    /**
+     * Resets task state
+     */
+    void reset();
 }

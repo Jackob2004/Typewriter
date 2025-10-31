@@ -26,4 +26,9 @@ public class DeleteTask implements WriterTask {
 
         }.runTaskTimer(plugin, 20, 2);
     }
+
+    @Override
+    public void reset() {
+
+    }
 }

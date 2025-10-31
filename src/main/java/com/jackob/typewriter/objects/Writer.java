@@ -2,10 +2,13 @@ package com.jackob.typewriter.objects;
 
 import com.jackob.typewriter.Typewriter;
 import com.jackob.typewriter.tasks.*;
+import com.jackob.typewriter.utils.SpawnAnimationUtil;
 import com.jackob.typewriter.utils.WriterUtil;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.scheduler.BukkitTask;
@@ -44,19 +47,22 @@ public class Writer {
 
     public void start(Player player) {
         final String invisibleText = "W".repeat(this.maxWordLength + 4) + "\n".repeat(lines - 1);
-        final TextDisplay background = WriterUtil.spawnDisplay(player, true, invisibleText);
-        final TextDisplay display = WriterUtil.spawnDisplay(player, false, "");
 
-        context = new AnimationContext(display, background, player, lines * maxWordLength, textColor);
-        new CloseButton(plugin, this::stop, player.getWorld(), calcButtonLocation(player));
+        final World world = player.getWorld();
+        final Location spawnLocation = player.getEyeLocation().add(player.getLocation().getDirection().multiply(5));
+        final List<Location> trialsLocations = SpawnAnimationUtil.spawnLines(spawnLocation, 2);
 
-        executeNext();
-    }
+        SpawnAnimationUtil.spawnTrials(trialsLocations, spawnLocation);
+        player.playSound(spawnLocation, Sound.BLOCK_ENDER_CHEST_OPEN, 1.0f, 1.0f);
+        SpawnAnimationUtil.startSizeAnimation(() -> {
+            final TextDisplay background = WriterUtil.spawnDisplay(world, spawnLocation, true, invisibleText);
+            final TextDisplay display = WriterUtil.spawnDisplay(world, spawnLocation, false, "");
 
-    private Location calcButtonLocation(Player player) {
-        final Location baseLocation = player.getEyeLocation().add(0, -0.5, 0);
+            context = new AnimationContext(display, background, player, lines * maxWordLength, textColor);
+            new CloseButton(plugin, this::stop, player.getWorld(), spawnLocation.clone().add(0, -0.5f, 0));
 
-        return baseLocation.add(player.getLocation().getDirection().multiply(2));
+            executeNext();
+        }, invisibleText, player.getWorld(), spawnLocation, plugin);
     }
 
     private void stop() {

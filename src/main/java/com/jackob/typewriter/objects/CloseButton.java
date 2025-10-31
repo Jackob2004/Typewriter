@@ -5,9 +5,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Interaction;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,9 +56,15 @@ public class CloseButton implements Listener {
 
     @EventHandler
     public void onBtnClick(PlayerInteractEntityEvent e) {
+        if (!(e.getRightClicked() instanceof Interaction)) return;
+        if (e.getRightClicked() != this.hitbox) return;
+
         removeButton();
         onClose.run();
         e.getHandlers().unregister(this);
+
+        final Player player = e.getPlayer();
+        player.playSound(player.getLocation(), Sound.BLOCK_IRON_TRAPDOOR_CLOSE, 1.0f, 1.0f);
     }
 
 }

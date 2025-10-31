@@ -8,6 +8,8 @@ public class AnimationContext {
 
     private final TextDisplay display;
 
+    private final TextDisplay background;
+
     private final Player receiver;
 
     private int currCharacter;
@@ -16,8 +18,9 @@ public class AnimationContext {
 
     private final TextColor textColor;
 
-    public AnimationContext(TextDisplay display, Player receiver, int textLength, TextColor textColor) {
+    public AnimationContext(TextDisplay display, TextDisplay background, Player receiver, int textLength, TextColor textColor) {
         this.display = display;
+        this.background = background;
         this.receiver = receiver;
         this.currCharacter = 0;
         this.currText = new char[textLength];
@@ -44,6 +47,11 @@ public class AnimationContext {
         if (currCharacter - 1 >= 0)  {
             this.currCharacter--;
         }
+    }
+
+    public void clearContext() {
+        display.remove();
+        background.remove();
     }
 
 }

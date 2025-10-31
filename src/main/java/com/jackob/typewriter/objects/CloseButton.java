@@ -1,0 +1,62 @@
+package com.jackob.typewriter.objects;
+
+import com.jackob.typewriter.Typewriter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.Interaction;
+import org.bukkit.entity.TextDisplay;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+
+public class CloseButton implements Listener {
+
+    private final Interaction hitbox;
+
+    private final TextDisplay buttonText;
+
+    private final Runnable onClose;
+
+    public CloseButton(Typewriter plugin, Runnable onClose, World world, Location location) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
+        this.hitbox = spawnHitbox(world, location);
+        this.buttonText = spawnText(world, location);
+        this.onClose = onClose;
+    }
+
+    private Interaction spawnHitbox(World world, Location location) {
+        return world.spawn(location, Interaction.class, interaction -> {
+            interaction.setResponsive(true);
+            interaction.setInteractionHeight(0.3f);
+            interaction.setInteractionWidth(0.5f);
+        });
+    }
+
+    private TextDisplay spawnText(World world, Location location) {
+        final Component component = Component.text("Close").color(NamedTextColor.WHITE);
+
+        return world.spawn(location, TextDisplay.class, text -> {
+            text.setBillboard(Display.Billboard.VERTICAL);
+            text.setBackgroundColor(Color.RED);
+            text.text(component);
+        });
+    }
+
+    private void removeButton() {
+        this.hitbox.remove();
+        this.buttonText.remove();
+    }
+
+    @EventHandler
+    public void onBtnClick(PlayerInteractEntityEvent e) {
+        removeButton();
+        onClose.run();
+        e.getHandlers().unregister(this);
+    }
+
+}

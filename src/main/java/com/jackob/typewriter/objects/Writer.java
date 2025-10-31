@@ -5,8 +5,10 @@ import com.jackob.typewriter.tasks.*;
 import com.jackob.typewriter.utils.WriterUtil;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
@@ -28,6 +30,8 @@ public class Writer {
 
     private AnimationContext context;
 
+    private BukkitTask task;
+
     Writer(Typewriter plugin, Builder builder) {
         this.plugin = plugin;
         this.tasksSequence = new ArrayList<>(builder.tasksSequence);
@@ -43,12 +47,25 @@ public class Writer {
         final TextDisplay background = WriterUtil.spawnDisplay(player, true, invisibleText);
         final TextDisplay display = WriterUtil.spawnDisplay(player, false, "");
 
-        context = new AnimationContext(display, player, lines * maxWordLength, textColor);
-
-        plugin.getManager().registerDisplay(background);
-        plugin.getManager().registerDisplay(display);
+        context = new AnimationContext(display, background, player, lines * maxWordLength, textColor);
+        new CloseButton(plugin, this::stop, player.getWorld(), calcButtonLocation(player));
 
         executeNext();
+    }
+
+    private Location calcButtonLocation(Player player) {
+        final Location baseLocation = player.getEyeLocation().add(0, -0.5, 0);
+
+        return baseLocation.add(player.getLocation().getDirection().multiply(2));
+    }
+
+    private void stop() {
+        if (task != null && !task.isCancelled()) {
+            task.cancel();
+            task = null;
+        }
+
+        context.clearContext();
     }
 
     private void executeNext() {
@@ -62,7 +79,7 @@ public class Writer {
             }
         }
 
-        Objects.requireNonNull(tasksQueue.poll()).execute(plugin, this::executeNext, context);
+        task = Objects.requireNonNull(tasksQueue.poll()).execute(plugin, this::executeNext, context);
     }
 
     public static class Builder {

@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -31,16 +32,16 @@ public class WriterUtil {
 
     /**
      *
-     * @param player the display will be shown to
+     * @param world in which it will spawn
+     * @param location spawn location
      * @param isBackground will only act as a background
      * @param text determines how big the display is
      * @return spawned display
      */
-    public static TextDisplay spawnDisplay(Player player, boolean isBackground, String text) {
-        final Location location = player.getEyeLocation().add(player.getLocation().getDirection().multiply(2));
+    public static TextDisplay spawnDisplay(World world, Location location, boolean isBackground, String text) {
         final Component component = Component.text(text).color(BLACK);
 
-        return player.getWorld().spawn(location, TextDisplay.class, entity -> {
+        return world.spawn(location, TextDisplay.class, entity -> {
             entity.text(component);
             entity.setBillboard(Display.Billboard.VERTICAL);
 

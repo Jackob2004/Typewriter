@@ -12,10 +12,13 @@ import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public class CloseButton implements Listener {
+
+    private final Typewriter plugin;
 
     private final Interaction hitbox;
 
@@ -26,9 +29,11 @@ public class CloseButton implements Listener {
     public CloseButton(Typewriter plugin, Runnable onClose, World world, Location location) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
+        this.plugin = plugin;
         this.hitbox = spawnHitbox(world, location);
         this.buttonText = spawnText(world, location);
         this.onClose = onClose;
+        plugin.getCleanupManager().registerEntities(hitbox, buttonText);
     }
 
     private Interaction spawnHitbox(World world, Location location) {
@@ -52,6 +57,8 @@ public class CloseButton implements Listener {
     private void removeButton() {
         this.hitbox.remove();
         this.buttonText.remove();
+        HandlerList.unregisterAll(this);
+        plugin.getCleanupManager().unregisterEntities(this.hitbox, this.buttonText);
     }
 
     @EventHandler
@@ -61,7 +68,6 @@ public class CloseButton implements Listener {
 
         removeButton();
         onClose.run();
-        e.getHandlers().unregister(this);
 
         final Player player = e.getPlayer();
         player.playSound(player.getLocation(), Sound.BLOCK_IRON_TRAPDOOR_CLOSE, 1.0f, 1.0f);

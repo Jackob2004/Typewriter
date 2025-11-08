@@ -36,7 +36,7 @@ public class TypeTask implements WriterTask {
 
                 context.incrementCurrCharacter();
                 localCurrCharacter++;
-                context.getReceiver().playSound(context.getReceiver().getLocation(), Sound.BLOCK_COMPARATOR_CLICK, 1, 1);
+                context.getDisplay().getWorld().playSound(context.getDisplay().getLocation(), Sound.BLOCK_COMPARATOR_CLICK, 1, 1);
             }
 
         }.runTaskTimer(plugin, 20, 8);

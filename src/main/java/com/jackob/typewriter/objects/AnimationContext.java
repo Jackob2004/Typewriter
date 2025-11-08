@@ -1,7 +1,6 @@
 package com.jackob.typewriter.objects;
 
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
 public class AnimationContext {
@@ -10,18 +9,15 @@ public class AnimationContext {
 
     private final TextDisplay background;
 
-    private final Player receiver;
-
     private int currCharacter;
 
     private final char[] currText;
 
     private final TextColor textColor;
 
-    public AnimationContext(TextDisplay display, TextDisplay background, Player receiver, int textLength, TextColor textColor) {
+    public AnimationContext(TextDisplay display, TextDisplay background, int textLength, TextColor textColor) {
         this.display = display;
         this.background = background;
-        this.receiver = receiver;
         this.currCharacter = 0;
         this.currText = new char[textLength];
         this.textColor = textColor;
@@ -33,9 +29,9 @@ public class AnimationContext {
 
     public char[] getCurrText() { return currText; }
 
-    public Player getReceiver() { return receiver; }
-
     public TextColor getTextColor() { return textColor; }
+
+    public TextDisplay getBackground() { return background; }
 
     public void incrementCurrCharacter() {
         if (currCharacter + 1 < currText.length) {

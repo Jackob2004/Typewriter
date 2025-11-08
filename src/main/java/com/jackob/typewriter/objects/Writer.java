@@ -58,8 +58,9 @@ public class Writer {
             final TextDisplay background = WriterUtil.spawnDisplay(world, spawnLocation, true, invisibleText);
             final TextDisplay display = WriterUtil.spawnDisplay(world, spawnLocation, false, "");
 
-            context = new AnimationContext(display, background, player, lines * maxWordLength, textColor);
+            context = new AnimationContext(display, background, lines * maxWordLength, textColor);
             new CloseButton(plugin, this::stop, player.getWorld(), spawnLocation.clone().add(0, -0.5f, 0));
+            plugin.getCleanupManager().registerEntities(context.getDisplay(), context.getBackground());
 
             executeNext();
         }, invisibleText, player.getWorld(), spawnLocation, plugin);
@@ -72,6 +73,7 @@ public class Writer {
         }
 
         context.clearContext();
+        plugin.getCleanupManager().unregisterEntities(context.getDisplay(), context.getBackground());
     }
 
     private void executeNext() {

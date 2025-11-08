@@ -47,7 +47,7 @@ public class SpawnAnimationUtil {
 
             @Override
             public void run() {
-                if (repetitions <= 0 ) {
+                if (repetitions <= 0) {
                     this.cancel();
                     onComplete.run();
                     return;
@@ -78,7 +78,13 @@ public class SpawnAnimationUtil {
     }
 
     public static List<Location> spawnLines(Location baseLoc, int baseOffset) {
-        final int[][] offsets = { {-baseOffset, 0, baseOffset}, {baseOffset, 0, baseOffset}, {-baseOffset, 0, -baseOffset}, {baseOffset, 0, -baseOffset} };
+        final int[][] offsets = {
+                {-baseOffset, 0, baseOffset},
+                {baseOffset, 0, baseOffset},
+                {-baseOffset, 0, -baseOffset},
+                {baseOffset, 0, -baseOffset}
+        };
+
         final List<Location> finalLocations = new ArrayList<>(4);
 
         for (int[] offset : offsets) {

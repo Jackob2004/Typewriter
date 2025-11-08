@@ -6,7 +6,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Display;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
 import static net.kyori.adventure.text.format.NamedTextColor.BLACK;

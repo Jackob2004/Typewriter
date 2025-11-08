@@ -4,6 +4,7 @@ import com.jackob.typewriter.Typewriter;
 import com.jackob.typewriter.objects.Writer;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,8 @@ public class TestCommand implements BasicCommand {
         if (!(source.getSender() instanceof Player p)) return;
 
         final Writer writer = new Writer.Builder()
+                .setTextColor(TextColor.color(0xFF0013))
+                .setLoop(true)
                 .type("Hello\n")
                 .pause(5)
                 .type("World!")
@@ -27,6 +30,7 @@ public class TestCommand implements BasicCommand {
                 .type("There")
                 .delete()
                 .type("nothing to lose")
+                .delete()
                 .build(plugin);
 
         writer.start(p);
